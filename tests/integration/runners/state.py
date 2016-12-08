@@ -68,6 +68,20 @@ class StateRunnerTest(integration.ShellCase):
         for item in good_out:
             self.assertIn(item, ret_output)
 
+    def test_orchestrate_fail(self):
+        '''
+        test salt-run state.orchestrate with nested failures
+        '''
+        out, code = self.run_run('state.orchestrate issue-30367.orch', with_retcode=True)
+
+        for line in out:
+            import sys
+            sys.stdout.write(line)
+            sys.stdout.write('\n')
+
+        self.assertEqual(code, 1)
+
+
     def test_state_event(self):
         '''
         test to ensure state.event
